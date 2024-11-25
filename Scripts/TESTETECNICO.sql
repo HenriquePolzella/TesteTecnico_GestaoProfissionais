@@ -1,14 +1,12 @@
 CREATE OR ALTER PROCEDURE dbo.CriarBancoDeDadosETabelas
 AS
 BEGIN
-    -- Criar o banco de dados
+
     IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'TesteTecnico')
     BEGIN
         CREATE DATABASE TesteTecnico;
     END
 
-    
-    -- Criar a tabela Profissionais
     IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Profissionais')
     BEGIN
         CREATE TABLE Profissionais (
@@ -20,7 +18,6 @@ BEGIN
         );
     END
 
-    -- Criar a tabela Especialidades
     IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Especialidades')
     BEGIN
         CREATE TABLE Especialidades (
@@ -30,7 +27,6 @@ BEGIN
         );
     END
 
-    -- Inserir os dados na tabela Especialidades
     IF NOT EXISTS (SELECT * FROM Especialidades)
     BEGIN
         INSERT INTO Especialidades (Nome_Especialidade, Tipo_Documento)
@@ -45,24 +41,24 @@ BEGIN
             ('Anestesiologia', 'CRM'),
             ('Radiologia', 'CRM'),
             ('Endocrinologia', 'CRM'),
-            ('Nutricionista ClÌnico', 'CRN'),
-            ('NutriÁ„o Esportiva', 'CRN'),
-            ('NutriÁ„o OncolÛgica', 'CRN'),
-            ('Fisioterapia OrtopÈdica', 'CREFITO'),
-            ('Fisioterapia NeurolÛgica', 'CREFITO'),
-            ('Fisioterapia RespiratÛria', 'CREFITO'),
+            ('Nutricionista Cl√≠nico', 'CRN'),
+            ('Nutri√ß√£o Esportiva', 'CRN'),
+            ('Nutri√ß√£o Oncol√≥gica', 'CRN'),
+            ('Fisioterapia Ortop√©dica', 'CREFITO'),
+            ('Fisioterapia Neurol√≥gica', 'CREFITO'),
+            ('Fisioterapia Respirat√≥ria', 'CREFITO'),
             ('Ortodontia', 'CRO'),
             ('Implantodontia', 'CRO'),
             ('Endodontia', 'CRO'),
             ('Enfermagem Geral', 'COREN'),
-            ('Enfermagem ObstÈtrica', 'COREN'),
-            ('Psicologia ClÌnica', 'CRP'),
+            ('Enfermagem Obst√©trica', 'COREN'),
+            ('Psicologia Cl√≠nica', 'CRP'),
             ('Psicologia Organizacional', 'CRP'),
             ('Neuropsicologia', 'CRP'),
-            ('Farm·cia ClÌnica', 'CRF'),
-            ('Farm·cia Hospitalar', 'CRF'),
-            ('An·lises ClÌnicas', 'CRF'),
+            ('Farm√°cia Cl√≠nica', 'CRF'),
+            ('Farm√°cia Hospitalar', 'CRF'),
+            ('An√°lises Cl√≠nicas', 'CRF'),
             ('Personal Trainer', 'CREF'),
-            ('PreparaÁ„o FÌsica', 'CREF');
+            ('Prepara√ß√£o F√≠sica', 'CREF');
     END
 END;
