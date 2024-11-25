@@ -36,7 +36,7 @@ Para que o projeto funcione no seu ambiente local, você deve atualizar a string
    ```
  Executar o Script SQL para Criar as Tabelas
    O script necessário para criar as tabelas no banco de dados já está incluído no repositório.
-  Navegue até a pasta Scripts (ou onde o arquivo SQL esteja localizado).
+  Navegue até a pasta Scripts
   Execute o script SQL para criar as tabelas e inicializar o banco de dados com a estrutura correta.
 
 
