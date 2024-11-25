@@ -1,0 +1,250 @@
+﻿@{
+    ViewData["Title"] = "Gestão de Profissionais";
+}
+@model IEnumerable<Profissional>
+
+
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="dropdown mb-3">
+            <button class="btn btn-outline-teal dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Filtrar por Especialidade: @ViewBag.SelectedEspecialidade
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li>
+                    <a class="dropdown-item" href="@Url.Action("Index", new { especialidade = "Todas" })">Todas</a>
+                </li>
+                @foreach (var especialidade in ViewBag.Especialidades)
+                {
+                    <li>
+                        <a class="dropdown-item" href="@Url.Action("Index", new { especialidade = especialidade.Nome_Especialidade.Trim() })">
+                            @especialidade.Nome_Especialidade
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        @if (TempData["Mensagem"] != null || TempData["MensagemErro"] != null)
+        {
+            var mensagemClasse = TempData["Mensagem"] != null ? "alert-success" : "alert-danger";
+            var mensagemTexto = TempData["Mensagem"] ?? TempData["MensagemErro"];
+
+            <div class="alert @mensagemClasse alert-dismissible fade show mb-3" role="alert">
+                @mensagemTexto
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <button class="btn btn-teal" data-bs-toggle="modal" data-bs-target="#modalCadastrar">Adicionar +</button>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div id="mensagemNenhumRegistro" class="alert alert-warning mt-3">
+            Não há registros para <span id="especialidadeFiltro">@ViewBag.SelectedEspecialidade</span>.
+        </div>
+    }
+    else
+    {
+        <table id="salesTable" class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nome</th>
+                    <th>Especialidade</th>
+                    <th>Tipo do Documento</th>
+                    <th>Número do Documento</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var profissional in Model)
+                {
+                    <tr>
+                        <td>@profissional.Id_Profissional</td>
+                        <td>@profissional.Nome_Profissional</td>
+                        <td>@profissional.Nome_Especialidade</td>
+                        <td>@profissional.Tipo_Documento</td>
+                        <td>@profissional.Numero_Documento</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-link p-0 text-dark" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <button class="dropdown-item"
+                                                onclick="CarregaProfissional('@profissional.Id_Profissional', '@profissional.Nome_Profissional', '@profissional.Nome_Especialidade', '@profissional.Tipo_Documento', '@profissional.Numero_Documento')">
+                                            Editar
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button class="dropdown-item text-danger"
+                                                onclick="excluirProfissional(@profissional.Id_Profissional, '@profissional.Nome_Profissional', '@profissional.Tipo_Documento', '@profissional.Numero_Documento')">
+                                            Excluir
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (ViewBag.TotalPages > 1)
+    {
+        <nav aria-label="Page navigation" class="mt-4" id="paginacao">
+            <ul class="pagination">
+                @if (ViewBag.CurrentPage > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1 })" aria-label="Anterior">
+                            <span aria-hidden="true">&lsaquo;</span>
+                        </a>
+                    </li>
+                }
+
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                    </li>
+                }
+
+                @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1 })" aria-label="Próximo">
+                            <span aria-hidden="true">&rsaquo;</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+
+    <div id="mensagemNenhumRegistro" class="alert alert-warning mt-3" style="display: none;">
+        Não há registros para <span id="especialidadeFiltro"></span>.
+    </div>
+
+</div>
+
+
+
+<!-- Modal Cadastro-->
+<div class="modal fade" id="modalCadastrar" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Cadastrar Profissional</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Create" method="post">
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome do Profissional</label>
+                        <input type="text" class="form-control" id="nome" name="Nome_Profissional" oninput="bloquearNumeros(event)" maxlength="85" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="especialidade" class="form-label">Especialidade</label>
+                        <select class="form-select" id="especialidadeSelect" name="Nome_Especialidade" onchange="atualizarTipoDocumento()" required>
+                            <option value="" disabled selected>Selecione uma especialidade</option>
+                            @foreach (var especialidade in ViewBag.Especialidades)
+                            {
+                                <option value="@especialidade.Nome_Especialidade" data-tipo="@especialidade.Tipo_Documento">
+                                    @especialidade.Nome_Especialidade
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tipodocumento" class="form-label">Tipo Documento</label>
+                        <input type="text" class="form-control" id="tipoDocumento" name="Tipo_Documento" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label for="numeroDocumento" class="form-label">Número do Documento</label>
+                        <input type="text" class="form-control" id="numeroDocumento" name="Numero_Documento" maxlength="7" oninput="bloquearLetras(event)" required />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-teal" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-teal">Salvar</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Excluir Profissional -->
+<div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalExcluirLabel">Excluir Profissional</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="modalTextoExcluir"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <!-- Formulário de exclusão -->
+                <form id="formExcluir" method="post" asp-action="Excluir">
+                    <input type="hidden" id="profissionalId" name="id" />
+                    <button type="submit" class="btn btn-danger">Sim, Excluir</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Profissional -->
+<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarLabel">Editar Profissional</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Edit" method="post">
+                    <!-- Campo oculto para ID -->
+                    <input type="hidden" id="editarId" name="Id_Profissional" />
+
+                    <div class="mb-3">
+                        <label for="editarNome" class="form-label">Nome do Profissional</label>
+                        <input type="text" class="form-control" id="editarNome" name="Nome_Profissional" maxlength="85" oninput="bloquearNumeros(event)" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editarEspecialidade" class="form-label">Especialidade</label>
+                        <select class="form-select" id="editarEspecialidade" name="Nome_Especialidade" onchange="atualizarTipoDocumentoEdicao()" required>
+                            <option value="" disabled>Selecione uma especialidade</option>
+                            @foreach (var especialidade in ViewBag.Especialidades)
+                            {
+                                <option value="@especialidade.Nome_Especialidade" data-tipo="@especialidade.Tipo_Documento">
+                                    @especialidade.Nome_Especialidade
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editarTipoDocumento" class="form-label">Tipo Documento</label>
+                        <input type="text" class="form-control" id="editarTipoDocumento" name="Tipo_Documento" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editarNumeroDocumento" class="form-label">Número do Documento</label>
+                        <input type="text" class="form-control" id="editarNumeroDocumento" name="Numero_Documento" maxlength="7" oninput="bloquearLetras(event)" required />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-teal" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-teal">Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,244 @@
+html {
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+
+.bg-teal {
+    background-color: #006666; 
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+.bi-people {
+    cursor: pointer;
+}
+
+
+.btn-teal {
+    background-color: #006666;
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 0.5rem 1rem;
+}
+
+    .btn-teal:hover {
+        background-color: #004d4d;
+    }
+
+.btn-outline-teal {
+    color: #006666;
+    border: 2px solid #006666;
+    background-color: white;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+}
+
+    .btn-outline-teal:hover {
+        background-color: #e6f2f2;
+    }
+
+.btn-link {
+    background: none;
+    border: none;
+    color: #495057;
+    font-size: 1.5rem; 
+    padding: 0;
+    margin: 0; 
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    padding: 0.5rem 0;
+    min-width: 150px; 
+    border-radius: 5px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    color: #495057;
+    text-align: left;
+}
+
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .dropdown-item.text-danger {
+        color: #dc3545; 
+    }
+
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end; 
+    gap: 10px;
+    padding: 1rem;
+    border-top: 1px solid #dee2e6; 
+}
+
+
+thead th {
+    font-weight: bold;
+    background-color: #f8f9fa; 
+    color: #495057; 
+    padding: 0.75rem; 
+    border: 2px solid #dee2e6;
+}
+
+tbody td {
+    font-weight: normal; 
+    padding: 0.75rem; 
+    color: #495057; 
+    border: 1px solid #dee2e6;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9; 
+}
+
+tbody tr:hover {
+    background-color: #e9ecef; 
+    cursor: pointer; 
+}
+
+.dropdown-menu .dropdown-item {
+    color: #000;
+    background-color: #fff; 
+    padding: 8px 16px;
+    border-radius: 0; 
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+    .dropdown-menu .dropdown-item:hover {
+        background-color: #f0f4f5;
+        color: #000;
+    }
+
+    .dropdown-menu .dropdown-item:active,
+    .dropdown-menu .dropdown-item.selected {
+        background-color: #004d4d; 
+        color: #fff; 
+    }
+
+
+.dropdown-menu {
+    max-height: 200px;
+    overflow-y: auto; 
+    border: 1px solid #ccc;
+}
+
+  
+    .dropdown-menu::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .dropdown-menu::-webkit-scrollbar-thumb {
+        background-color: #004d4d;
+        border-radius: 4px;
+    }
+
+        .dropdown-menu::-webkit-scrollbar-thumb:hover {
+            background-color: #003333; 
+        }
+
+#paginacao {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.page-item {
+    margin: 0 5px;
+}
+
+.page-link {
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #007bff;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+    .page-link:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+        transform: scale(1.1);
+    }
+
+.page-item.active .page-link {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+    font-weight: bold;
+}
+
+.page-item.disabled .page-link {
+    background-color: #f2f2f2;
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.page-item:not(:last-child)::after {
+    content: "|";
+    margin-left: 10px;
+    color: #ccc;
+}
+
+.page-item .page-link:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.pagination .page-item {
+    margin: 0 5px; 
+}
+
+.pagination .page-link {
+    background-color: white; 
+    color: #000;
+    border: 1px solid #ddd;
+    padding: 10px 15px; 
+    border-radius: 5px;
+    text-decoration: none; 
+    transition: all 0.2s ease; 
+}
+
+    .pagination .page-link:hover {
+        background-color: #006666; 
+        border-color: #007bff; 
+        color: #ffffff;
+    }
+
+.pagination .page-item.active .page-link {
+    background-color: #084c61;
+    color: #ffffff;
+    border-color: #084c61; 
+}
